@@ -1,0 +1,120 @@
+.navbar-items {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  padding: 0 30px;
+  background-color: #222;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+  width: 98%;
+  height: 70px;
+  border-radius: 15px;
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translate(-50%);
+  color: white;
+}
+
+.nav-links {
+  text-decoration: none;
+  color: white;
+  padding: 1rem;
+  white-space: nowrap;
+}
+
+.nav-links i {
+  padding-right: 10px;
+}
+
+.nav-links:hover {
+  color: #838080;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-menu {
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  grid-gap: 10px;
+  list-style: none;
+  align-items: center;
+  text-align: center;
+  justify-content: end;
+}
+
+.fa-bars,
+.fa-times {
+  color: white;
+}
+
+.menu-icons {
+  display: none;
+}
+
+.nav-links-sign {
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
+  background-color: #fafafa;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 1rem;
+  color: #222;
+}
+@media screen and (max-width: 858px) {
+  .navbar-item {
+    z-index: 99;
+  }
+
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background: rgba(53, 53, 53, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(4px);
+    border-radius: 15px;
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: -110%;
+    align-items: stretch;
+    padding: 80px 0 30px 0;
+    margin: 0;
+    z-index: -1;
+    transition: all 0.5s ease-in-out;
+  }
+
+  .nav-menu.active {
+    left: 0%;
+  }
+
+  .nav-links {
+    display: block;
+    color: black;
+    padding: 2rem 0;
+    widows: 100%;
+  }
+
+  .nav-links:hover {
+    color: #666464;
+    backdrop-filter: blur(20px);
+  }
+
+  .menu-icons {
+    display: block;
+  }
+
+  .nav-links-sign {
+    padding: 1.5rem;
+    background-color: #fafafa;
+    display: block;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 90%;
+    margin: auto;
+    border-radius: 5px;
+  }
+}
