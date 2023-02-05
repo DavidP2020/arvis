@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
+import { numberWithCommas } from "../../utils/comma";
 
 const style = {
   position: "absolute",
@@ -174,13 +175,13 @@ const Home = () => {
 
                       <div>
                         <span className="text-xl font-bold">
-                          Rp. {data.harga}
+                          Rp. {numberWithCommas(data.harga)}
                         </span>
                       </div>
 
                       <div className="mt-5 flex gap-2">
                         <button
-                          className="button-primary"
+                          className="buttonCart bg-black text-white"
                           onClick={() => addToCart(data)}
                         >
                           Add to Cart
@@ -201,7 +202,7 @@ const Home = () => {
                           <>
                             <button
                               className="button-icon"
-                              onClick={() => handleOpen(data.id)}
+                              onClick={() => handleOpen(data)}
                             >
                               <img
                                 src="assets/images/eye.svg"

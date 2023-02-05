@@ -5,6 +5,7 @@ import Register from "./components/Auth/Register";
 import "./firebase";
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import TransactionComplete from "./components/Transaction/TransactionComplete";
 
 function App() {
   const [isLogin, setLogin] = useState(false);
@@ -43,6 +44,7 @@ function App() {
       ) : (
         <Routes>
           <Route path="/dashboard" element={<Home />} />
+          <Route path="/success-order" element={<TransactionComplete />} />
           <Route path="*" element={<Home />} />
         </Routes>
       )}
