@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { API_URL } from "../../../utils/constant";
 import axios from "axios";
 import { Box, Button } from "@mui/material";
-import pangsit from "../../../assets/images/cemilan/pangsit.jpg";
+import swal from "sweetalert";
 
 const ProductDetail = ({ data, handleClose, ...props }) => {
   const [itemList, setItemList] = useState([]);
+  const [cart, setCart] = useState([]);
+
   const fetchItem = async () => {
     try {
       let res = await axios.get(API_URL + "products?id=" + data);
@@ -15,6 +17,64 @@ const ProductDetail = ({ data, handleClose, ...props }) => {
     }
   };
 
+  const addToCart = async (value) => {
+    console.log(value);
+
+    try {
+      let res = await axios
+        .get(API_URL + "keranjangs?product.id=" + value.id)
+        .then((res) => {
+          if (res.data.length === 0) {
+            const cart = {
+              jumlah: 1,
+              total_harga: value.harga,
+              product: value,
+            };
+            try {
+              axios.post(API_URL + "keranjangs", cart).then((res) => {
+                swal({
+                  title: "Success Add to Cart",
+                  text: "Success Add to Cart " + cart.product.nama,
+                  icon: "success",
+                  buttons: false,
+                  timer: 1000,
+                });
+                handleClose();
+                window.location.reload(false);
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          } else {
+            const cart = {
+              jumlah: res.data[0].jumlah + 1,
+              total_harga: res.data[0].total_harga + value.harga,
+              product: value,
+            };
+            try {
+              axios
+                .put(API_URL + "keranjangs/" + res.data[0].id, cart)
+                .then((res) => {
+                  swal({
+                    title: "Success Add to Cart",
+                    text: "Success Add to Cart " + cart.product.nama,
+                    icon: "success",
+                    buttons: false,
+                    timer: 1000,
+                  });
+                  handleClose();
+                  window.location.reload(false);
+                });
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  //function untuk menjalankan functuin dari fetchItem
   useEffect(() => {
     fetchItem();
   }, []);
@@ -33,7 +93,7 @@ const ProductDetail = ({ data, handleClose, ...props }) => {
             {/* Left Side */}
             <div className="left-side w-1/2  bg-gradient bg-gradient-to-bl from-blue-800 to-blue-500">
               <img
-                src={pangsit}
+                src={item.gambar}
                 alt="pangsit"
                 width={100}
                 height={100}
@@ -78,7 +138,8 @@ const ProductDetail = ({ data, handleClose, ...props }) => {
                     <span>
                       <input
                         type="number"
-                        id="jumlah"
+                        id="qty"
+                        nama="qty"
                         class="bg-gray-500 w-20 text-white focus:outline-none active:outline-none text-center text-md"
                       />
                     </span>
@@ -88,7 +149,11 @@ const ProductDetail = ({ data, handleClose, ...props }) => {
 
               {/* Add to Card */}
               <div className="text-center pt-10">
-                <button className="buttonCart" type="button">
+                <button
+                  className="buttonCart"
+                  type="button"
+                  onClick={() => addToCart(item)}
+                >
                   Add to Cart
                 </button>
               </div>

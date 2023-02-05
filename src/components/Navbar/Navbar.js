@@ -65,7 +65,7 @@ const Navbar = () => {
             {MenuData.map((item, i) => {
               return (
                 <li key={i}>
-                  <Link to={item.url} className={item.cName}>
+                <Link to={item.url} className={item.cName}>
                     {item.title}
                   </Link>
                 </li>

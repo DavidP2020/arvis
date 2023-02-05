@@ -33,8 +33,8 @@ const ListCategory = ({ ...props }) => {
         <strong>List Category</strong>
       </h4>
       <hr />
-      <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-        <nav aria-label="secondary mailbox folders">
+    <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+      <nav aria-label="secondary mailbox folders">
           <List>
             {item.map((data, i) => {
               return (

@@ -3,14 +3,18 @@ import axios from "axios";
 import { API_URL } from "../../utils/constant";
 import Navbar from "../Navbar/Navbar";
 import ListCategory from "./Category/ListCategory";
-import Result from "./Category/Result";
+import Cart from "./Category/Cart";
 import ProductDetail from "./Product/ProductDetail";
-import { Box, Fade, Modal, Toolbar, Typography } from "@mui/material";
-import pangsit from "../../assets/images/cemilan/pangsit.jpg";
-import eye from "../../assets/images/eye.svg";
-import love from "../../assets/images/love.svg";
-import Login from "../Auth/Login";
+import {
+  Box,
+  CardMedia,
+  Fade,
+  Modal,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { Link } from "react-router-dom";
+import swal from "sweetalert";
 
 const style = {
   position: "absolute",
@@ -25,6 +29,7 @@ const style = {
 
 const Home = () => {
   const [item, setItem] = useState([]);
+  const [cart, setCart] = useState([]);
   const [category, setCategory] = useState("Makanan");
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState();
@@ -42,18 +47,19 @@ const Home = () => {
   const fetchItem = async () => {
     try {
       let res = await axios.get(API_URL + "products?category.nama=" + category);
-      console.log(res.data);
       setItem(res.data);
     } catch (error) {
       console.log(error);
     }
   };
-
-  //function untuk menjalankan functuin dari fetchItem
-  useEffect(() => {
-    fetchItem();
-    setUser(JSON.parse(localStorage.getItem("user")));
-  }, []);
+  const fetchCart = async () => {
+    try {
+      let res = await axios.get(API_URL + "keranjangs");
+      setCart(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const changeCategory = async (value) => {
     setCategory(value);
@@ -65,6 +71,69 @@ const Home = () => {
       console.log(error);
     }
   };
+
+  const addToCart = async (value) => {
+    console.log(value);
+
+    try {
+      let res = await axios
+        .get(API_URL + "keranjangs?product.id=" + value.id)
+        .then((res) => {
+          if (res.data.length === 0) {
+            const cart = {
+              jumlah: 1,
+              total_harga: value.harga,
+              product: value,
+            };
+            try {
+              axios.post(API_URL + "keranjangs", cart).then((res) => {
+                swal({
+                  title: "Success Add to Cart",
+                  text: "Success Add to Cart " + cart.product.nama,
+                  icon: "success",
+                  buttons: false,
+                  timer: 1000,
+                });
+                fetchCart();
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          } else {
+            const cart = {
+              jumlah: res.data[0].jumlah + 1,
+              total_harga: res.data[0].total_harga + value.harga,
+              product: value,
+            };
+            try {
+              axios
+                .put(API_URL + "keranjangs/" + res.data[0].id, cart)
+                .then((res) => {
+                  swal({
+                    title: "Success Add to Cart",
+                    text: "Success Add to Cart " + cart.product.nama,
+                    icon: "success",
+                    buttons: false,
+                    timer: 1000,
+                  });
+                  fetchCart();
+                });
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //function untuk menjalankan functuin dari fetchItem
+  useEffect(() => {
+    fetchItem();
+    fetchCart();
+    setUser(JSON.parse(localStorage.getItem("user")));
+  }, []);
 
   return (
     <div className="App">
@@ -89,13 +158,11 @@ const Home = () => {
               {item.map((data, i) => {
                 return (
                   <div className="card" key={i}>
-                    <img
-                      src={pangsit}
-                      alt="pangsit"
-                      width={100}
-                      height={100}
-                      priority
-                      className="w-full h-full object-cover"
+                    <CardMedia
+                      component="img"
+                      height="194"
+                      image={data.gambar}
+                      alt="Paella dish"
                     />
                     <div className="p-5 flex-col gap-3">
                       <div className="flex items-center gap-2">
@@ -112,11 +179,16 @@ const Home = () => {
                       </div>
 
                       <div className="mt-5 flex gap-2">
-                        <button className="button-primary">Add to Cart</button>
+                        <button
+                          className="button-primary"
+                          onClick={() => addToCart(data)}
+                        >
+                          Add to Cart
+                        </button>
 
                         <button className="button-icon">
                           <img
-                            src={love}
+                            src="assets/images/love.svg"
                             alt="header-splash"
                             width={25}
                             height={25}
@@ -132,7 +204,7 @@ const Home = () => {
                               onClick={() => handleOpen(data.id)}
                             >
                               <img
-                                src={eye}
+                                src="assets/images/eye.svg"
                                 alt="header-splash"
                                 width={25}
                                 height={25}
@@ -182,7 +254,7 @@ const Home = () => {
                           <>
                             <Link to="/login" className="button-icon">
                               <img
-                                src={eye}
+                                src="assets/images/eye.svg"
                                 alt="header-splash"
                                 width={25}
                                 height={25}
@@ -201,7 +273,7 @@ const Home = () => {
           </div>
         </div>
         <div className="flex-auto w-12">
-          <Result />
+          <Cart cart={cart} />
         </div>
       </div>
     </div>

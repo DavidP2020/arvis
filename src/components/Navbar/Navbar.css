@@ -9,7 +9,7 @@
   width: 98%;
   height: 70px;
   border-radius: 15px;
-  position: fixed;
+  position: absolute;
   top: 10px;
   left: 50%;
   transform: translate(-50%);
