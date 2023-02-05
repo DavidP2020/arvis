@@ -12,6 +12,7 @@ import "./../../index.css";
 const Register = () => {
   const navigate = useNavigate();
 
+  // Function Untuk login menggunakan google
   const handleGoogleLogin = () => {
     const auth = getAuth();
     const provider = new GoogleAuthProvider();
@@ -25,7 +26,8 @@ const Register = () => {
       });
   };
 
-  const handleGoogleRegister = (e) => {
+  // Function Untuk register menggunakan email  & password
+  const handleRegister = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
@@ -54,11 +56,7 @@ const Register = () => {
   return (
     <div>
       <main className="screen">
-        <form
-          className="form"
-          autoComplete="off"
-          onSubmit={handleGoogleRegister}
-        >
+        <form className="form" autoComplete="off" onSubmit={handleRegister}>
           <h1 className="text-4xl text-center">Register</h1>
           <div className="flexInput">
             <TextField

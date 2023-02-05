@@ -11,6 +11,7 @@ import "./../../index.css";
 const Login = () => {
   const navigate = useNavigate();
 
+  // Function Untuk login menggunakan google
   const handleGoogleLogin = () => {
     const auth = getAuth();
     const provider = new GoogleAuthProvider();
@@ -25,6 +26,7 @@ const Login = () => {
       });
   };
 
+  // Function Untuk login menggunakan passowrd dan email
   const handleEmailPasswordLogin = (e) => {
     e.preventDefault();
     const email = e.target.email.value;

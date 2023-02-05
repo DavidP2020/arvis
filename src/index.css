@@ -4,9 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+/* body {
   @apply font-poppins text-text bg-gradient-to-tr from-blue-800 to-blue-500;
-}
+} */
 
 @layer components {
   .screen {
@@ -18,7 +18,7 @@ body {
   }
 
   .form {
-    @apply w-full bg-white flex flex-col gap-4 shadow-lg rounded-lg mt-8 p-8;
+    @apply w-full bg-gray-100 flex flex-col gap-4 shadow-lg rounded-lg mt-8 p-8;
   }
 
   .flexButton {
@@ -34,5 +34,31 @@ body {
   }
   .buttonGoogle {
     @apply h-10 w-full text-sm leading-[160%] border border-cyan-900 rounded-full;
+  }
+  .buttonCart {
+    @apply h-10 w-1/2 text-sm leading-[160%] border border-cyan-900 rounded-full;
+  }
+
+  .card {
+    @apply bg-white text-gray-700
+    w-64 min-h-[10rem]
+    shadow-lg rounded-md overflow-hidden;
+  }
+  .badge {
+    @apply px-3 py-1 rounded-full text-xs bg-gray-100;
+  }
+  .product-title {
+    @apply font-semibold text-xl overflow-ellipsis overflow-hidden whitespace-nowrap;
+  }
+  .button-primary {
+    @apply bg-blue-600/80 hover:bg-blue-600/90
+      px-6 py-2 rounded-full
+      text-white font-normal text-sm
+      tracking-wider transition;
+  }
+
+  .button-icon {
+    @apply flex-grow flex justify-center items-center
+    transition rounded-md;
   }
 }
