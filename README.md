@@ -6,6 +6,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+install node modulenya terlebih dahulu
+
+### npm install / yarn install
+
 Jalankan json-server terlebih dahulu
 
 ### json-server --watch db.json
