@@ -16,6 +16,7 @@ import { numberWithCommas } from "../../../utils/comma";
 import EditCart from "./EditCart";
 import TotalPrice from "./TotalPrice";
 
+// style untuk pop up
 const style = {
   position: "absolute",
   top: "50%",
@@ -28,8 +29,8 @@ const style = {
 };
 
 const Cart = ({ ...props }) => {
-  const [open, setOpen] = useState(false);
   const [user, setUser] = useState();
+  const [open, setOpen] = useState(false);
   const [id, setId] = useState();
 
   //function untuk membuka pop up
@@ -44,6 +45,7 @@ const Cart = ({ ...props }) => {
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
+  // Mengambil Data yang diparsing
   const { cart } = props;
   return (
     <div>
@@ -104,6 +106,8 @@ const Cart = ({ ...props }) => {
                             }
                           />
                         </ListItemButton>
+
+                        {/* Modal Pop Up */}
                         <Modal
                           aria-labelledby="transition-modal-title"
                           aria-describedby="transition-modal-description"
@@ -121,7 +125,7 @@ const Cart = ({ ...props }) => {
                                   component="div"
                                   sx={{ flexGrow: 2 }}
                                 >
-                                  <b className="text-xl">Product Detail</b>
+                                  <b className="text-xl">Cart Detail</b>
                                 </Typography>
                                 <i
                                   className="icon fa fa-times"
@@ -133,6 +137,7 @@ const Cart = ({ ...props }) => {
                                 id="transition-modal-description"
                                 sx={{ mt: 2 }}
                               >
+                                {/* Isi Pop Up */}
                                 <EditCart data={id} handleClose={handleClose} />
                               </Typography>
                             </Box>

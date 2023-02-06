@@ -2,7 +2,13 @@ export const MenuData = [
   {
     id: "home",
     title: "Home",
-    url: "#",
+    url: "/dashboard",
+    cName: "nav-links",
+  },
+  {
+    id: "order",
+    title: "Order",
+    url: "/order",
     cName: "nav-links",
   },
   {

@@ -6,9 +6,10 @@ import swal from "sweetalert";
 import { numberWithCommas } from "../../../utils/comma";
 
 const EditCart = ({ data, handleClose, ...props }) => {
-  const [qty, setQty] = useState([]);
+  const [qty, setQty] = useState(data.jumlah);
   const [item, setItem] = useState(data);
 
+  //   Update Cart
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -29,6 +30,7 @@ const EditCart = ({ data, handleClose, ...props }) => {
           button: false,
           timer: 1500,
         });
+        console.log(data);
         handleClose();
         window.location.reload(false);
       })
@@ -37,6 +39,7 @@ const EditCart = ({ data, handleClose, ...props }) => {
       });
   };
 
+  //   Menghapus Cart
   const deleteOrder = (id) => {
     axios
       .delete(API_URL + "keranjangs/" + id)
@@ -113,12 +116,13 @@ const EditCart = ({ data, handleClose, ...props }) => {
                 <div class="increment-input flex space-x-3 bg-gray-100 rounded-full overflow-hidden">
                   <span>
                     <input
+                      type="number"
                       id="qty"
                       nama="qty"
                       placeholder={data.jumlah}
-                      min="1"
                       class="bg-gray-500 w-20 text-white focus:outline-none active:outline-none text-center text-md"
                       onChange={(e) => setQty(e.target.value)}
+                      required
                     />
                   </span>
                 </div>
@@ -137,7 +141,7 @@ const EditCart = ({ data, handleClose, ...props }) => {
           </form>
         </div>
       </div>
-      {/* Button Close */}
+      {/* Button Close & Delete */}
       <div style={{ textAlign: "right" }}>
         <button
           onClick={() => deleteOrder(data.id)}

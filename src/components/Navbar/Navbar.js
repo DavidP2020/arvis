@@ -1,3 +1,4 @@
+import { Popover } from "@mui/material";
 import { getAuth, signOut } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,6 +9,7 @@ const Navbar = () => {
   const [user, setUser] = useState();
   const [active, setActive] = useState("nav-menu");
   const [icon, setIcon] = useState("fas fa-bars ");
+  const [anchorEl, setAnchorEl] = useState(null);
   const navToggle = () => {
     active === "nav-menu"
       ? setActive("nav-menu active")
@@ -15,6 +17,16 @@ const Navbar = () => {
     icon === "nav-toggler" ? setIcon("fas fa-times") : setIcon("fas fa-bars");
   };
   const navigate = useNavigate();
+
+  const handleClickPop = (event) => {
+    event.preventDefault();
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClosePop = () => {
+    setAnchorEl(null);
+  };
+  const openPop = Boolean(anchorEl);
+  const idPop = openPop ? "simple-popover" : undefined;
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
@@ -39,6 +51,7 @@ const Navbar = () => {
         <div className="menu-icons" onClick={navToggle}>
           <i className={icon}></i>
         </div>
+
         {user ? (
           <ul className={active}>
             {MenuData.filter((a) => a.id !== "sign").map((item, i) => {
@@ -51,21 +64,35 @@ const Navbar = () => {
               );
             })}
             {user?.displayName ? (
-              <li className="nav-links">{user?.displayName}</li>
+              <li className="nav-links" onClick={(e) => handleClickPop(e)}>
+                {user?.displayName}
+              </li>
             ) : (
-              <li className="nav-links">{user?.email}</li>
+              <li className="nav-links" onClick={(e) => handleClickPop(e)}>
+                {user?.email}
+              </li>
             )}
-
-            <li className="nav-links-sign" onClick={handleLogout}>
-              Log Out
-            </li>
+            <Popover
+              id={idPop}
+              open={openPop}
+              anchorEl={anchorEl}
+              onClose={handleClosePop}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+            >
+              <button className="nav-links-sign" onClick={handleLogout}>
+                Log Out
+              </button>
+            </Popover>
           </ul>
         ) : (
           <ul className={active}>
-            {MenuData.map((item, i) => {
+            {MenuData.filter((a) => a.id !== "order").map((item, i) => {
               return (
                 <li key={i}>
-                <Link to={item.url} className={item.cName}>
+                  <Link to={item.url} className={item.cName}>
                     {item.title}
                   </Link>
                 </li>

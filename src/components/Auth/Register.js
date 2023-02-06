@@ -55,6 +55,7 @@ const Register = () => {
 
   return (
     <div>
+      {/* tampilan form */}
       <main className="screen">
         <form className="form" autoComplete="off" onSubmit={handleRegister}>
           <h1 className="text-4xl text-center">Register</h1>

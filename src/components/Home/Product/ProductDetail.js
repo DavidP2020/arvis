@@ -6,10 +6,9 @@ import swal from "sweetalert";
 import { numberWithCommas } from "../../../utils/comma";
 
 const ProductDetail = ({ data, handleClose, ...props }) => {
-  const [itemList, setItemList] = useState([]);
-  const [cart, setCart] = useState([]);
-  const [qty, setQty] = useState([]);
+  const [qty, setQty] = useState(1);
 
+  // Fungsi untuk add to cart
   const addToCart = async (value) => {
     console.log(value);
 
@@ -67,7 +66,7 @@ const ProductDetail = ({ data, handleClose, ...props }) => {
       console.log(error);
     }
   };
-  console.log(data);
+
   return (
     // Card Box
     <Box

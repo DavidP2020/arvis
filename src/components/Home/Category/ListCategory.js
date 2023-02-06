@@ -11,7 +11,11 @@ import { API_URL } from "../../../utils/constant";
 
 const ListCategory = ({ ...props }) => {
   const [item, setItem] = useState([]);
-  const { changeCategory, chooseCategory } = props;
+
+  // Mengambil Data yang diparsing
+  const { changeCategory } = props;
+
+  //Get categories
   const fetchItem = async () => {
     try {
       let res = await axios.get(API_URL + "categories");
@@ -33,12 +37,13 @@ const ListCategory = ({ ...props }) => {
         <strong>List Category</strong>
       </h4>
       <hr />
-    <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-      <nav aria-label="secondary mailbox folders">
+      <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+        <nav aria-label="secondary mailbox folders">
           <List>
             {item.map((data, i) => {
               return (
                 <ListItem disablePadding>
+                  {/* Fungsi onClicknya untuk memberikan value pada fungsi ChangeCategory berdasarkan cateogry yang dipilih */}
                   <ListItemButton>
                     <ListItemText
                       primary={data.nama}

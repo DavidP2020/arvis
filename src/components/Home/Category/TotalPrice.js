@@ -5,11 +5,15 @@ import { numberWithCommas } from "../../../utils/comma";
 import { API_URL } from "../../../utils/constant";
 
 const TotalPrice = ({ total, ...props }) => {
+  // Navigasi untuk perpindahaan link
   const navigate = useNavigate();
+
+  //   Fungsi untuk menghitung total bayar
   const totalBayar = total.reduce(function (result, item) {
     return result + item.total_harga;
   }, 0);
 
+  //   Fungsi untuk submit order
   const submitOrder = (totalBayar) => {
     const order = {
       total_bayar: totalBayar,

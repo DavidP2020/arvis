@@ -5,18 +5,12 @@ import Navbar from "../Navbar/Navbar";
 import ListCategory from "./Category/ListCategory";
 import Cart from "./Category/Cart";
 import ProductDetail from "./Product/ProductDetail";
-import {
-  Box,
-  CardMedia,
-  Fade,
-  Modal,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import { Link } from "react-router-dom";
+import { Box, Fade, Modal, Toolbar, Typography } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import { numberWithCommas } from "../../utils/comma";
 
+// Style untuk pop up
 const style = {
   position: "absolute",
   top: "50%",
@@ -35,6 +29,7 @@ const Home = () => {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState();
   const [id, setId] = useState();
+  const navigate = useNavigate();
 
   //function untuk membuka pop up
   const handleOpen = (id) => {
@@ -53,6 +48,8 @@ const Home = () => {
       console.log(error);
     }
   };
+
+  //function untuk mengambil data keranjang
   const fetchCart = async () => {
     try {
       let res = await axios.get(API_URL + "keranjangs");
@@ -62,6 +59,7 @@ const Home = () => {
     }
   };
 
+  //function untuk mengambil data product berdasarkan category
   const changeCategory = async (value) => {
     setCategory(value);
     try {
@@ -73,6 +71,7 @@ const Home = () => {
     }
   };
 
+  // fungsi add to cart
   const addToCart = async (value) => {
     console.log(value);
 
@@ -102,7 +101,7 @@ const Home = () => {
             }
           } else {
             const cart = {
-              jumlah: res.data[0].jumlah + 1,
+              jumlah: parseInt(res.data[0].jumlah) + 1,
               total_harga: res.data[0].total_harga + value.harga,
               product: value,
             };
@@ -140,8 +139,9 @@ const Home = () => {
     <div className="App">
       <Navbar />
       <div className="flex mt-20 text-xl p-6">
-        <div className="flex-auto w-12 ...">
-          <ListCategory changeCategory={changeCategory} category={category} />
+        <div className="flex-auto w-4 ...">
+          {/* Melakukan parsing fungsi changeCategory ke listCategory */}
+          <ListCategory changeCategory={changeCategory} />
         </div>
         <div className="flex-auto w-2/4">
           <div>
@@ -159,11 +159,13 @@ const Home = () => {
               {item.map((data, i) => {
                 return (
                   <div className="card" key={i}>
-                    <CardMedia
-                      component="img"
-                      height="194"
-                      image={data.gambar}
-                      alt="Paella dish"
+                    <img
+                      src={data.gambar}
+                      alt="header-splash"
+                      width={100}
+                      height={100}
+                      priority
+                      className="w-full h-full object-cover"
                     />
                     <div className="p-5 flex-col gap-3">
                       <div className="flex items-center gap-2">
@@ -180,26 +182,26 @@ const Home = () => {
                       </div>
 
                       <div className="mt-5 flex gap-2">
-                        <button
-                          className="buttonCart bg-black text-white"
-                          onClick={() => addToCart(data)}
-                        >
-                          Add to Cart
-                        </button>
-
-                        <button className="button-icon">
-                          <img
-                            src="assets/images/love.svg"
-                            alt="header-splash"
-                            width={25}
-                            height={25}
-                            priority
-                            className="opacity-50"
-                          />
-                        </button>
-
                         {user ? (
                           <>
+                            <button
+                              className="buttonCart bg-black text-white"
+                              onClick={() => addToCart(data)}
+                            >
+                              Add to Cart
+                            </button>
+
+                            <button className="button-icon">
+                              <img
+                                src="assets/images/love.svg"
+                                alt="header-splash"
+                                width={25}
+                                height={25}
+                                priority
+                                className="opacity-50"
+                              />
+                            </button>
+
                             <button
                               className="button-icon"
                               onClick={() => handleOpen(data)}
@@ -213,6 +215,8 @@ const Home = () => {
                                 className="opacity-50"
                               />
                             </button>
+
+                            {/* Pop Up */}
                             <Modal
                               aria-labelledby="transition-modal-title"
                               aria-describedby="transition-modal-description"
@@ -242,6 +246,7 @@ const Home = () => {
                                     id="transition-modal-description"
                                     sx={{ mt: 2 }}
                                   >
+                                    {/* Isi Pop Up */}
                                     <ProductDetail
                                       data={id}
                                       handleClose={handleClose}
@@ -253,6 +258,23 @@ const Home = () => {
                           </>
                         ) : (
                           <>
+                            <button
+                              className="buttonCart bg-black text-white"
+                              onClick={() => navigate("/login")}
+                            >
+                              Add to Cart
+                            </button>
+
+                            <button className="button-icon">
+                              <img
+                                src="assets/images/love.svg"
+                                alt="header-splash"
+                                width={25}
+                                height={25}
+                                priority
+                                className="opacity-50"
+                              />
+                            </button>
                             <Link to="/login" className="button-icon">
                               <img
                                 src="assets/images/eye.svg"
@@ -273,7 +295,8 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="flex-auto w-12">
+        <div className="flex-auto w-20">
+          {/* Melakukan Parsing data cart ke cart */}
           <Cart cart={cart} />
         </div>
       </div>
